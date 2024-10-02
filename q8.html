@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive; /* Pixelated font */
+            background-color: #008080; /* Teal background */
+            color: #000;
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Space between logo and quote container */
+        }
+
+        .windows-logo {
+            width: 100px; /* Adjust size */
+        }
+
+        .container {
+            text-align: center;
+            background: #C0C0C0; /* Light gray window */
+            border: 2px solid #000; /* Black border */
+            padding: 20px;
+            width: 400px;
+            box-shadow: 5px 5px 0 #000; /* Old-style shadow */
+            position: relative;
+        }
+
+        h1 {
+            font-size: 15px; /* Adjusted size */
+            margin-bottom: 20px;
+            color: #000080; /* Navy blue title */
+            background: #A0A0A0; /* Title bar gray */
+            padding: 5px;
+            border: 1px solid #808080; /* Dark gray border */
+            text-align: center;
+            position: relative;
+        }
+
+        .quote {
+            font-size: 12px; /* Adjusted size */
+            margin: 20px 0;
+            color: #000;
+            border-left: 4px solid #000080; /* Quote accent */
+            padding: 10px;
+            background: #E0E0E0; /* Light background for quote */
+            border-radius: 5px;
+            box-shadow: 2px 2px 0 #808080; /* Small shadow for depth */
+        }
+
+        .date-time, .weather, .countdown {
+            font-size: 8.5px; /* Adjusted size */
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .container {
+            background: #333;
+            border: 2px solid #444;
+        }
+
+        .dark-mode h1 {
+            color: #333;
+        }
+
+        .dark-mode .quote {
+            background: #444;
+            color: #f4f4f4;
+            border-left: 4px solid #1e1e1e91;
+        }
+
+        .toggle-switch {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .toggle-label {
+            cursor: pointer;
+            height: 24px;
+            width: 48px;
+            background-color: #A0A0A0;
+            border: 2px solid #808080; /* Button border */
+            border-radius: 0; /* Square corners */
+            position: relative;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .toggle-label:before {
+            content: '';
+            position: absolute;
+            height: 24px;
+            width: 24px;
+            background-color: white;
+            border: 2px solid #808080; /* Button border */
+            left: 0;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-label {
+            background-color: #333; /* Navy blue when checked */
+        }
+
+        input:checked + .toggle-label:before {
+            transform: translateX(24px);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 600px) {
+            .windows-logo {
+                width: 80px; /* Reduce logo size for smaller screens */
+            }
+
+            .container {
+                width: 90%; /* Make container width responsive */
+                padding: 10px; /* Adjust padding */
+            }
+
+            h1 {
+                font-size: 12px; /* Smaller font size for title */
+                margin-bottom: 15px; /* Reduced margin */
+            }
+
+            .quote {
+                font-size: 10px; /* Smaller font size for quotes */
+                padding: 8px; /* Reduced padding */
+            }
+
+            .date-time, .weather, .countdown {
+                font-size: 7.5px; /* Smaller font size for other texts */
+            }
+
+            .toggle-switch {
+                top: 10px; /* Adjust position for toggle switch */
+                right: 10px; /* Adjust position */
+            }
+
+            .toggle-label {
+                height: 20px; /* Smaller toggle height */
+                width: 40px; /* Smaller toggle width */
+            }
+
+            .toggle-label:before {
+                height: 20px; /* Smaller toggle button */
+                width: 20px; /* Smaller toggle button */
+            }
+        }
+
+        @media (max-width: 390px) {
+            h1 {
+                font-size: 10px; /* Further reduce title size */
+            }
+
+            .quote {
+                font-size: 9px; /* Further reduce quote size */
+            }
+
+            .date-time, .weather, .countdown {
+                font-size: 6px; /* Further reduce text size */
+            }
+
+            .toggle-label {
+                width: 35px; /* Adjust toggle label size */
+            }
+
+            .container {
+                padding: 10px; /* Reduce padding even further */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/archive/8/85/20170728075245%21Windows_95_logo.svg/120px-Windows_95_logo.svg.png" alt="Windows Logo" class="windows-logo">
+    </div>
+    
+    <div class="toggle-switch">
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle" class="toggle-label"></label>
+    </div>
+    
+    <div class="container">
+        <h1>Quote of the Day</h1>
+        <div class="quote" id="quote">Loading...</div>
+        <div class="date-time" id="date-time"></div>
+        <div class="weather" id="weather">Loading weather...</div>
+        <div id="countdown" class="countdown"></div>
+    </div>
+
+    <script>
+        const quotes = [
+            "Why do programmers prefer dark mode? Because light attracts bugs!",
+            "I would tell you a joke about UDP, but you probably won’t get it.",
+            "Why do Java developers wear glasses? Because they don’t C#!",
+            "There are 10 types of people in the world: those who understand binary and those who don’t.",
+            "To err is human; to really mess up, you need a computer.",
+            "I'm not a great programmer; I'm just a good programmer with great habits.",
+            "Debugging: Being the detective in a crime movie where you are also the murderer.",
+            "Why did the programmer quit his job? Because he didn’t get arrays.",
+            "Programmer’s motto: It works on my machine!",
+            "In a world full of algorithms, be a function.",
+            "Real programmers count from 0.",
+            "Software developers: The only people who can work for a week straight without any sleep.",
+            "I asked the librarian if the library had any books on paranoia. She whispered, 'They're right behind you.'",
+            "Why did the computer go to therapy? It had too many bytes.",
+            "Life is too short to fix bugs; just document them.",
+            "A SQL query walks into a bar, walks up to two tables, and asks, 'Can I join you?'",
+            "I'm a software developer; I have no life. I write code.",
+            "Why did the web developer leave the restaurant? Because they couldn't find a table.",
+            "My code doesn't always work, but when it does, I have no idea why.",
+            "Why did the IT guy bring his computer to the beach? He wanted to surf the net.",
+            "There are only two hard things in computer science: cache invalidation and naming things.",
+            "Why was the computer cold? Because it left its Windows open!",
+            "How do you comfort a JavaScript bug? You console it!",
+            "Why was the developer unhappy at their job? They wanted arrays.",
+            "Why do programmers hate nature? It has too many bugs.",
+            "What's a programmer's favorite hangout place? The Foo Bar!",
+            "Why don't programmers like nature? It has too many bugs.",
+            "A programmer’s favorite exercise? Running loops!",
+            "Why do Python programmers prefer the dark? Because they love indentation!",
+            "How many programmers does it take to change a light bulb? None, that’s a hardware problem!",
+            "What’s a developer’s favorite game? Tetris, because it’s all about fitting things together!",
+            "Why do developers prefer using the keyboard? Because they can't find the mouse!",
+            "Why did the functions stop calling each other? Because they had constant arguments!",
+            "Why did the programmer bring a ladder to work? Because they wanted to reach new heights!",
+            "Why was the developer stuck at the bar? They couldn't find a key!",
+            "How do you know a programmer is on vacation? They have a tan from all the time spent outdoors!",
+            "Why do programmers prefer iOS development? Because they can't handle the Androids!",
+            "What do you call a programmer from Finland? Nerdic!",
+            "Why did the programmer get kicked out of school? Because he kept breaking the class rules!",
+            "Why do web developers always go broke? Because they spend all their money on cookies!",
+            "Why did the coder leave the job? They couldn't find the right syntax!",
+            "Why are programmers bad at relationships? They always expect their partner to compile!",
+            "Why did the programmer fall in love? Because she had great syntax!",
+            "Why do programmers always mix up Christmas and Halloween? Because Oct 31 == Dec 25!",
+            "What do you call a programming language that doesn’t allow errors? A nightmare!",
+            "Why did the developer stay calm during the storm? They knew how to handle exceptions!",
+            "Why do programmers prefer minimalism? Less code, less problems!",
+            "Why did the programmer take a nap? He needed to catch up on his sleep cycles!",
+            "How did the programmer propose? He asked, 'Will you be my variable?'",
+            "Why do programmers hate driving? They can’t handle the exceptions!",
+            "Why do developers hate cold weather? Too many freeze errors!",
+            "Why did the coder go broke? Because he lost his cache!"
+        ];
+
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+
+        function displayQuote() {
+            const lastQuoteTime = localStorage.getItem('lastQuoteTime');
+            const now = Date.now();
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+            const savedQuote = localStorage.getItem('currentQuote');
+
+            if (savedQuote && lastQuoteTime) {
+                // Check if the quote is still valid
+                if (now - lastQuoteTime <= twentyFourHours) {
+                    // Display the saved quote if it's still within 24 hours
+                    document.getElementById('quote').innerText = savedQuote;
+                    startCountdown(twentyFourHours - (now - lastQuoteTime));
+                    return;
+                }
+            }
+
+            // Show a new quote and update last quote time
+            const newQuote = getRandomQuote();
+            document.getElementById('quote').innerText = newQuote;
+            localStorage.setItem('currentQuote', newQuote);
+            localStorage.setItem('lastQuoteTime', now);
+            startCountdown(twentyFourHours);
+        }
+
+        function startCountdown(duration) {
+            const countdownElement = document.getElementById('countdown');
+            const endTime = Date.now() + duration;
+
+            function updateCountdown() {
+                const remainingTime = endTime - Date.now();
+                if (remainingTime <= 0) {
+                    countdownElement.innerText = "Next quote available!";
+                    clearInterval(timer);
+                    displayQuote(); // Refresh quote when countdown ends
+                } else {
+                    const seconds = Math.floor((remainingTime / 1000) % 60);
+                    const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+                    const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+                    countdownElement.innerText = `Next quote in ${hours}h ${minutes}m ${seconds}s`;
+                }
+            }
+
+            updateCountdown(); // Initial call to display countdown immediately
+            const timer = setInterval(updateCountdown, 1000); // Update countdown every second
+        }
+
+        // Initial setup
+        displayQuote();
+        updateDateTime();
+        displayLocalWeather();
+        setInterval(updateDateTime, 1000);
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('date-time').innerText = now.toLocaleString(undefined, options);
+        }
+
+        function displayLocalWeather() {
+            // Simulated weather data
+            const city = 'Your City'; // Replace with actual city
+            const temperatureF = '75°F'; // Simulated temperature
+            const weatherDescription = 'Clear Sky'; // Simulated weather description
+            document.getElementById('weather').innerText = `Current weather in ${city}: ${temperatureF}, ${weatherDescription}`;
+        }
+
+        // Dark mode toggle functionality
+        const toggleSwitch = document.getElementById('darkModeToggle');
+        toggleSwitch.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>
