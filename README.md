@@ -1,5 +1,9 @@
 # Quote of the Day Website
 
+<p align="center">
+    <img width="200" src="https://i.ibb.co/Fqb4vCQ/qotd.jpg" alt="Material Bread logo">
+</p>
+
 This project is a retro-styled "Quote of the Day" website that displays programming-related jokes and quotes. It features a nostalgic Windows 95-inspired design with a pixelated font and a teal background.
 
 ## Features
